@@ -1,0 +1,16 @@
+{
+  "name": "adapt-narrativeCode",
+  "version": "0.1",
+  "framework": ">=2",
+  "homepage": "https://github.com/CollierCZ/adapt-narrativeCode",
+  "issues": "https://github.com/CollierCZ/adapt-narrativeCode/issues",
+  "displayName" : "Narrative Code",
+  "component" : "narrativeCode",
+  "description": "A component that displays highlighted code blocks with accompanying text",
+  "main": "/js/adapt-narrativeCode.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-component"
+  ],
+  "license": "GPLv3"
+}

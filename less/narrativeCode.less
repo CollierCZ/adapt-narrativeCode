@@ -1,0 +1,325 @@
+.narrativeCode-component {
+
+    &.desktop {
+        .narrativeCode-slide-container {
+            width: 60%;
+            margin-right: 3%;
+            float: left;
+            .dir-rtl & {
+                margin-right: inherit;
+                margin-left: 3%;
+                float: right;
+            }
+        }
+
+        .narrativeCode-slider-code {
+            margin-right: 4px;
+            margin-bottom: @icon-size;
+            width:60%;
+        }
+
+        .narrativeCode-slider-code pre {
+                    margin-top: 0;
+                }
+
+        .narrativeCode-strapline {
+            display:none;
+        }
+
+        .narrativeCode-content-inner {
+            .narrativeCode-controls {
+                position: static;
+                display: none;
+                margin-top: 0px;
+                margin-bottom: 10px;
+                width: auto;
+                height: auto;
+                padding: 8px;
+                .icon {
+                    margin: 0px;
+                }
+            }
+            .narrativeCode-indicators {
+                display: none;
+                position: relative;
+                top: -4px;
+            }
+            .narrativeCode-progress {
+                background-color: @item-color;
+                &.selected {
+                    background-color: @item-color-selected;
+                }
+            }
+            .narrativeCode-content-item.narrativeCode-hidden {
+                    display: none;
+            }
+        }
+
+        .narrativeCode-text-controls {
+            .narrativeCode-content-inner {
+                position: relative;
+                .narrativeCode-controls-container {
+                    position: absolute;
+                    width: 100%;
+                    left: 0px;
+                    top: 10px;
+                    display: block;
+                }
+                .narrativeCode-controls {
+                    margin-bottom: 0px;
+                    display: inline-block;
+                    &.narrativeCode-hidden {
+                        visibility: hidden;
+                    }
+                }
+                .narrativeCode-control-left {
+                    float:left;
+                }
+                .narrativeCode-control-right {
+                    float: right;
+                }
+                .narrativeCode-indicators {
+                    display: inline-block;
+                    width: auto;
+                    position: absolute;
+                    margin-top: 10px;
+                    top: 0px;
+                    left: 50%;
+                }
+                .narrativeCode-content-item {
+                    padding-top: 36px;
+                }
+            }
+
+            .narrativeCode-slide-container {
+                .narrativeCode-controls {
+                    display: none;
+                }
+                .narrativeCode-indicators {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .narrativeCode-content {
+        width: 36%;
+        background-color: @item-color;
+        color: @item-text-color;
+        float: right;
+        .dir-rtl & {
+            float: left;
+        }
+    }
+
+    .narrativeCode-content-inner {
+        padding:20px;
+    }
+
+    &.mobile {
+        .narrativeCode-content {
+            display:none;
+        }
+    }
+
+    .narrativeCode-slide-container {
+        width: 100%;
+        position: relative;
+        overflow-x: hidden;
+        float: left;
+        .dir-rtl & {
+            float: right;
+        }
+    }
+
+    .narrativeCode-slider-code {
+        position: relative;
+        float: left;
+        .dir-rtl & {
+            float: right;
+        }
+    }
+
+    .narrativeCode-item-title {
+        position:relative;
+        display:block;
+    }
+
+    .narrativeCode-indicators {
+        text-align: center;
+    }
+
+    .narrativeCode-progress {
+        width: (@icon-size/2);
+        height: (@icon-size/2);
+        display: inline-block;
+        margin: 1px;
+        border:inherit;
+        border-radius: 50%;
+        background-color: darken(@component-background-color, 10%);
+        cursor: pointer;
+        &.selected {
+            background-color: @item-color;
+        }
+    }
+
+    .narrativeCode-controls {
+        display: block;
+        width: (@icon-size*2);
+        height: (@icon-size*2);
+        position: absolute;
+        bottom: 0px;
+        margin-top: -(@icon-size*2);
+        z-index: 10;
+        text-decoration: none;
+        background-color: @item-color;
+        .no-touch &:hover {
+            background-color: @item-color-hover;
+            .icon {
+                color: @item-text-color-hover;
+            }
+        }
+        .icon {
+            margin: (@icon-size/2);
+            color: @item-text-color;
+        }
+        &.narrativeCode-hidden {
+            visibility: hidden;
+        }
+    }
+
+    .narrativeCode-control-left {
+        left: 0;
+
+        .dir-rtl & {
+        	left: inherit;
+        	right: 0;
+        }
+    }
+
+    .narrativeCode-control-right {
+        right: 0;
+
+        .dir-rtl & {
+            left: 0;
+            right: inherit;
+        }
+    }
+
+    .narrativeCode-strapline {
+        height: auto;
+        position: relative;
+    }
+
+    .narrativeCode-strapline-header {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .narrativeCode-strapline-header-inner {
+        position:relative;
+    }
+
+    .narrativeCode-strapline-title {
+        position: relative;
+        float: left;
+        text-decoration: none;
+        background-color: @button-color;
+        color: @button-text-color;
+        .dir-rtl & {
+            float: right;
+        }
+        .icon {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            .dir-rtl & {
+                right: inherit;
+                left: 0;
+            }
+        }
+        .no-touch &:hover {
+            background-color: @button-color-hover;
+            color: @button-text-color-hover;
+            .icon {
+                color: @button-text-color-hover;
+            }
+
+        }
+        .focus-rect {
+            position: absolute;
+            right: extract(@focus-outline, 1);
+            bottom: extract(@focus-outline, 1);
+            top: extract(@focus-outline, 1);
+            left: extract(@focus-outline, 1);
+        }
+    }
+
+    .narrativeCode-strapline-title-inner {
+        height: (@item-padding-top + @item-padding-bottom + @icon-size);
+        line-height: (@item-padding-top + @item-padding-bottom + @icon-size);
+        padding-left: (@icon-size/2);
+        padding-right: (@item-padding-left + @item-padding-right + @icon-size);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        .dir-rtl & {
+            padding-right: (@icon-size/2);
+            padding-left: (@item-padding-left + @item-padding-right + @icon-size);
+        }
+    }
+
+    .narrativeCode-popup-open {
+        display: block;
+        position: absolute;
+        top:0;
+        right:0;
+        padding: @item-padding;
+        background-color: @background-color-inverted;
+        text-decoration: none;
+        z-index: 5;
+        .dir-rtl & {
+            right:inherit;
+            left:0;
+        }
+        .icon {
+            color: @foreground-color-inverted;
+            .no-touch &:hover {
+                color: lighten(@background-color-inverted, 30%);
+            }
+        }
+    }
+
+
+    .narrativeCode-hidden {
+        visibility: hidden;
+    }
+}
+
+
+html.accessibility {
+
+    .narrativeCode-control-left:focus, .narrativeCode-control-left.focus {
+        left: extract(@focus-outline, 1);
+        .dir-rtl & {
+            left: inherit;
+            right: extract(@focus-outline, 1);
+        }
+    }
+
+    .narrativeCode-control-right:focus, .narrativeCode-control-right.focus {
+        right: extract(@focus-outline, 1);
+        .dir-rtl & {
+            right: inherit;
+            left: extract(@focus-outline, 1);
+        }
+    }
+
+
+    &.no-touch {
+        .narrativeCode-strapline-title:focus .focus-rect {
+            outline: @focus-outline;
+        }
+    }
+}
