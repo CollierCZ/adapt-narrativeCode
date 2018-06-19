@@ -27,7 +27,7 @@ With the [Adapt CLI](https://github.com/adaptlearning/adapt-cli) installed, run 
 <div float align=right><a href="#top">Back to Top</a></div>
 
 ### Installing Prism
-Narrative Code works based on the [Prism](https://prismjs.com) highlighter. To keep the code small, you will have to install this library and css yourself based on which languages and style you want to have. To do so, visit the [Prism download page](https://prismjs.com/download.html) and select the languages and theme you want. Place the resulting prism.js file in /libraries and prism.css in /less.
+Narrative Code works based on the [Prism](https://prismjs.com) highlighter. To keep the code small, you will have to install this library and css yourself based on which languages and style you want to have. To do so, visit the [Prism download page](https://prismjs.com/download.html) and select the languages and theme you want. Place the resulting prism.js file in src/core/js/libraries. Rename the css file as "prism.less" and place it in src/core/less.
 
 
 ## Settings Overview
