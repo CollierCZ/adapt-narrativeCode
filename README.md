@@ -14,11 +14,11 @@ A fork of the [Narrative component](https://github.com/adaptlearning/adapt-contr
 With the [Adapt CLI](https://github.com/adaptlearning/adapt-cli) installed, run the following from the command line:  
 `adapt install adapt-narrativeCode`
 
-    Alternatively, this component can also be installed by adding the following line of code to the *adapt.json* file:  
-    `"adapt-narrativeCode": "*"`  
-    Then running the command:  
-    `adapt install`  
-    (This second method will reinstall all plug-ins listed in *adapt.json*.)  
+Alternatively, this component can also be installed by adding the following line of code to the *adapt.json* file:  
+`"adapt-narrativeCode": "*"`  
+Then running the command:  
+`adapt install`  
+(This second method will reinstall all plug-ins listed in *adapt.json*.)  
 
 ### Installing Prism
 Narrative Code works based on the [Prism](https://prismjs.com) highlighter. To keep the code small, you will have to install this library and css yourself based on which languages and style you want to have. To do so, visit the [Prism download page](https://prismjs.com/download.html) and select the languages and theme you want. Place the resulting prism.js file in src/core/js/libraries. Rename the css file as "prism.less" and place it in src/core/less.
