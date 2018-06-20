@@ -1,7 +1,7 @@
 define([
       'core/js/adapt',
       'core/js/views/componentView',
-      'core/js/libraries/prism'
+      'core/js/libraries/highlight.pack'
   ], function(Adapt, ComponentView) {
 
     var NarrativeCode = ComponentView.extend({
@@ -36,7 +36,7 @@ define([
             this.renderState();
             this.$('.narrativeCode-slider').imageready(_.bind(function() {
                 this.setReadyStatus();
-                Prism.highlightAll();
+                hljs.initHighlighting();
             }, this));
             this.setupNarrative();
         },

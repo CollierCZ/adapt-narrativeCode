@@ -20,8 +20,8 @@ Then running the command:
 `adapt install`  
 (This second method will reinstall all plug-ins listed in *adapt.json*.)  
 
-### Installing Prism
-Narrative Code works based on the [Prism](https://prismjs.com) highlighter. To keep the code small, you will have to install this library and css yourself based on which languages and style you want to have. To do so, visit the [Prism download page](https://prismjs.com/download.html) and select the languages and theme you want. Place the resulting prism.js file in src/core/js/libraries. Rename the css file as "prism.less" and place it in src/core/less.
+### Installing highlight.js
+Narrative Code works based on the [highlight.js](https://highlightjs.org/) highlighter. To keep the code small, you will have to install this library and css yourself based on which languages and style you want to have. To do so, visit the [download page](https://highlightjs.org/download/) and select the languages you want. Place the resulting highlight.pack.js file in src/core/js/libraries. Find the theme you want, remain the css file as "highlight.less", and place it in src/core/less.
 
 
 ## Settings Overview
