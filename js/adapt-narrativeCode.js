@@ -36,7 +36,6 @@ define([
             this.renderState();
             this.$('.narrativeCode-slider').imageready(_.bind(function() {
                 this.setReadyStatus();
-                hljs.initHighlighting();
             }, this));
             this.setupNarrative();
         },
@@ -323,6 +322,7 @@ define([
         }
 
     });
+    hljs.initHighlightingOnLoad();
 
     Adapt.register('narrativeCode', NarrativeCode);
 
