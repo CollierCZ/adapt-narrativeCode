@@ -69,6 +69,6 @@ The attributes listed below are used in *components.json* to configure **Narrati
 On mobile devices, the narrative text is collapsed above the code. It is accessed by clicking an icon (+) next to the strapline.
 
 ----------------------------
-**Version number:**  0.1  
+**Version number:**  0.4 
 **Framework versions:** 2+  
 **Author / maintainer:** [Aaron Collier](https://github.com/CollierCZ). Forked in June 2018 from the Narrative component written by the Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-narrative/graphs/contributors)    
