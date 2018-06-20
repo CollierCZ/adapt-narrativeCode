@@ -27,7 +27,7 @@
 			"title": "Narrative item 2",
 			"body": "Narratives can also be used to present case studies, where the different displays are used to set the scene, show the key events and then the outcome.",
 			"code": {
-				"src": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>Narrative</title>\n</head\n><body>\n<p>Hello world!</p>\n</body>\n</html>",
+				"src": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>Narrative</title>\n</head>\n<body>\n<p>Hello world!</p>\n</body>\n</html>",
 				"lang": "html"
 			},
 			"strapline": "Narrative item 2"
