@@ -2,7 +2,7 @@
     "name": "adapt-narrativeCode",
     "repository": "git://github.com/CollierCZ/adapt-narrativeCode.git",
     "framework": ">=2.1.0",
-    "version": "0.2",
+    "version": "0.3",
     "homepage": "https://github.com/CollierCZ/adapt-narrativeCode",
     "issues": "https://github.com/CollierCZ/adapt-narrativeCode/issues",
     "displayName": "Narrative Code",
