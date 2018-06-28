@@ -26,7 +26,7 @@ Narrative Code works based on the [Prism](https://prismjs.com) highlighter. To k
 
 ## Settings Overview
 
-The attributes listed below are used in *components.json* to configure **Narrative Code**, and are properly formatted as JSON in [*example.json*](https://github.com/adaptlearning/adapt-contrib-narrative/blob/master/example.json).
+The attributes listed below are used in *components.json* to configure **Narrative Code**, and are properly formatted as JSON in [*example.json*](https://github.com/CollierCZ/adapt-narrativeCode/blob/master/example.json).
 
 ### Attributes
 
@@ -61,7 +61,7 @@ The attributes listed below are used in *components.json* to configure **Narrati
 >**strapline** (string): This text is displayed as a title above the code when `Adapt.device.screenSize` is `small` (i.e., when viewed on mobile devices).  
 
 ### Accessibility  
-**Narrative Code** has been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: **ariaRegion**. This label is not a visible element. It is utilized by assistive technology such as screen readers. Should the region's text need to be customised, it can be found within the **globals** object in [*properties.schema*](https://github.com/adaptlearning/adapt-contrib-narrative/blob/master/properties.schema).   
+**Narrative Code** has been assigned a label using the [aria-label](https://github.com/adaptlearning/adapt_framework/wiki/Aria-Labels) attribute: **ariaRegion**. This label is not a visible element. It is utilized by assistive technology such as screen readers. Should the region's text need to be customised, it can be found within the **globals** object in [*properties.schema*](https://github.com/CollierCZ/adapt-narrativeCode/blob/master/properties.schema).   
 <div float align=right><a href="#top">Back to Top</a></div>
 
 ## Limitations
@@ -69,6 +69,6 @@ The attributes listed below are used in *components.json* to configure **Narrati
 On mobile devices, the narrative text is collapsed above the code. It is accessed by clicking an icon (+) next to the strapline.
 
 ----------------------------
-**Version number:**  0.4 
+**Version number:**  0.4
 **Framework versions:** 2+  
-**Author / maintainer:** [Aaron Collier](https://github.com/CollierCZ). Forked in June 2018 from the Narrative component written by the Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-narrative/graphs/contributors)    
+**Author / maintainer:** [Aaron Collier](https://github.com/CollierCZ). Forked in June 2018 from the [Narrative component](https://github.com/adaptlearning/adapt-contrib-narrative) written by the Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-narrative/graphs/contributors)    
