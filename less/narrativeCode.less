@@ -1,107 +1,100 @@
 @import "src/core/less/prism.less";
-.narrativeCode-component {
+html.size-large .narrativeCode-component {
+    .narrativeCode-slide-container {
+        width: 60%;
+        margin-right: 3%;
+        float: left;
+        .dir-rtl & {
+            margin-right: inherit;
+            margin-left: 3%;
+            float: right;
+        }
+    }
 
-    &.desktop {
-        .narrativeCode-slide-container {
-            width: 60%;
-            margin-right: 3%;
-            float: left;
-            .dir-rtl & {
-                margin-right: inherit;
-                margin-left: 3%;
+    .narrativeCode-slider-code {
+        margin-right: 1.8%;
+        width:60%;
+    }
+
+    .narrativeCode-strapline {
+        display:none;
+    }
+
+    .narrativeCode-content-inner {
+        .narrativeCode-controls {
+            position: static;
+            display: none;
+            margin-top: 0px;
+            margin-bottom: 10px;
+            width: auto;
+            height: auto;
+            padding: 8px;
+            .icon {
+                margin: 0px;
+            }
+        }
+        .narrativeCode-indicators {
+            display: none;
+            position: relative;
+            top: -4px;
+        }
+        .narrativeCode-progress {
+            background-color: @item-color;
+            &.selected {
+                background-color: @item-color-selected;
+            }
+        }
+        .narrativeCode-content-item.narrativeCode-hidden {
+                display: none;
+        }
+    }
+
+    .narrativeCode-text-controls {
+        .narrativeCode-content-inner {
+            position: relative;
+            .narrativeCode-controls-container {
+                position: absolute;
+                width: 100%;
+                left: 0px;
+                top: 10px;
+                display: block;
+            }
+            .narrativeCode-controls {
+                margin-bottom: 0px;
+                display: inline-block;
+                &.narrativeCode-hidden {
+                    visibility: hidden;
+                }
+            }
+            .narrativeCode-control-left {
+                float:left;
+            }
+            .narrativeCode-control-right {
                 float: right;
+            }
+            .narrativeCode-indicators {
+                display: inline-block;
+                width: auto;
+                position: absolute;
+                margin-top: 10px;
+                top: 0px;
+                left: 50%;
             }
         }
 
-        .narrativeCode-slider-code {
-            margin-right: 4px;
-            margin-bottom: @icon-size;
-            width:60%;
-        }
-
-        .narrativeCode-slider-code pre {
-                    margin-top: 0;
-                }
-
-        .narrativeCode-strapline {
-            display:none;
-        }
-
-        .narrativeCode-content-inner {
+        .narrativeCode-slide-container {
             .narrativeCode-controls {
-                position: static;
                 display: none;
-                margin-top: 0px;
-                margin-bottom: 10px;
-                width: auto;
-                height: auto;
-                padding: 8px;
-                .icon {
-                    margin: 0px;
-                }
             }
             .narrativeCode-indicators {
                 display: none;
-                position: relative;
-                top: -4px;
-            }
-            .narrativeCode-progress {
-                background-color: @item-color;
-                &.selected {
-                    background-color: @item-color-selected;
-                }
-            }
-            .narrativeCode-content-item.narrativeCode-hidden {
-                    display: none;
-            }
-        }
-
-        .narrativeCode-text-controls {
-            .narrativeCode-content-inner {
-                position: relative;
-                .narrativeCode-controls-container {
-                    position: absolute;
-                    width: 100%;
-                    left: 0px;
-                    top: 10px;
-                    display: block;
-                }
-                .narrativeCode-controls {
-                    margin-bottom: 0px;
-                    display: inline-block;
-                    &.narrativeCode-hidden {
-                        visibility: hidden;
-                    }
-                }
-                .narrativeCode-control-left {
-                    float:left;
-                }
-                .narrativeCode-control-right {
-                    float: right;
-                }
-                .narrativeCode-indicators {
-                    display: inline-block;
-                    width: auto;
-                    position: absolute;
-                    margin-top: 10px;
-                    top: 0px;
-                    left: 50%;
-                }
-                .narrativeCode-content-item {
-                    padding-top: 36px;
-                }
-            }
-
-            .narrativeCode-slide-container {
-                .narrativeCode-controls {
-                    display: none;
-                }
-                .narrativeCode-indicators {
-                    display: none;
-                }
             }
         }
     }
+}
+
+
+.narrativeCode-component {
 
     .narrativeCode-content {
         width: 36%;
@@ -117,8 +110,9 @@
         padding:20px;
     }
 
-    &.mobile {
         .narrativeCode-content {
+            .size-small &,
+            .size-medium & {
             display:none;
         }
     }
@@ -139,11 +133,6 @@
         .dir-rtl & {
             float: right;
         }
-    }
-
-    .narrativeCode-item-title {
-        position:relative;
-        display:block;
     }
 
     .narrativeCode-indicators {
@@ -169,7 +158,7 @@
         width: (@icon-size*2);
         height: (@icon-size*2);
         position: absolute;
-        bottom: 0px;
+        top: 50%;
         margin-top: -(@icon-size*2);
         z-index: 10;
         text-decoration: none;
@@ -218,7 +207,7 @@
     }
 
     .narrativeCode-strapline-header-inner {
-        position:relative;
+        position: relative;
     }
 
     .narrativeCode-strapline-title {
@@ -292,9 +281,15 @@
         }
     }
 
-
     .narrativeCode-hidden {
         visibility: hidden;
+    }
+
+    &:not(.disable-animation) {
+        .narrativeCode-slider,
+        .narrativeCode-strapline-header-inner {
+            transition: transform 400ms ease-in-out;
+        }
     }
 }
 
@@ -317,10 +312,7 @@ html.accessibility {
         }
     }
 
-
-    &.no-touch {
-        .narrativeCode-strapline-title:focus .focus-rect {
-            outline: @focus-outline;
-        }
+    .narrativeCode-strapline-title:focus .focus-rect {
+        outline: @focus-outline;
     }
 }
