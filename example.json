@@ -7,7 +7,7 @@
 	"_layout": "full",
 	"_comment": "setCompletionOn = inview | allItems",
 	"_setCompletionOn": "allItems",
-	"_hasNavigationInTextArea": false,
+	"_hasNavigationInTextArea": true,
 	"title": "Narrative Code",
 	"displayTitle": "Narrative Code",
 	"body": "The narrative component lets you scroll through a series of images each with some accompanying text.<br><br>This component is always spanned.",
