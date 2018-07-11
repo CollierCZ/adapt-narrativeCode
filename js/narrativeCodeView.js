@@ -93,7 +93,7 @@ define([
             var itemCount = this.model.get('_children').length;
             this.model.set({
                 '_totalWidth': (100 * itemCount) + itemCount,
-                '_itemWidth': (100 / itemCount) - 2
+                '_itemWidth': 100 / itemCount
             });
         },
 
