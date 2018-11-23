@@ -1,5 +1,5 @@
 @import "src/core/less/prism.less";
-html.size-large .narrativeCode-component {
+.mode-large.narrativeCode-component {
     .narrativeCode-slide-container {
         width: 60%;
         margin-right: 3%;
@@ -109,11 +109,8 @@ html.size-large .narrativeCode-component {
         padding:20px;
     }
 
-        .narrativeCode-content {
-            .size-small &,
-            .size-medium & {
-            display:none;
-        }
+    &.mode-small .narrativeCode-content {
+        display:none;
     }
 
     .narrativeCode-slide-container {
@@ -157,7 +154,7 @@ html.size-large .narrativeCode-component {
         width: (@icon-size*2);
         height: (@icon-size*2);
         position: absolute;
-        top: 50%;
+        top: 48px;
         margin-top: -(@icon-size*2);
         z-index: 10;
         text-decoration: none;
@@ -215,6 +212,8 @@ html.size-large .narrativeCode-component {
         text-decoration: none;
         background-color: @button-color;
         color: @button-text-color;
+        overflow: hidden;
+        min-height: (@item-padding-top + @item-padding-bottom + @icon-size);
         .dir-rtl & {
             float: right;
         }
@@ -246,13 +245,15 @@ html.size-large .narrativeCode-component {
     }
 
     .narrativeCode-strapline-title-inner {
-        height: (@item-padding-top + @item-padding-bottom + @icon-size);
-        line-height: (@item-padding-top + @item-padding-bottom + @icon-size);
         padding-left: (@icon-size/2);
         padding-right: (@item-padding-left + @item-padding-right + @icon-size);
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        padding-top: 10px;
+        padding-bottom: 10px;
         overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        vertical-align: middle;
         .dir-rtl & {
             padding-right: (@icon-size/2);
             padding-left: (@item-padding-left + @item-padding-right + @icon-size);
@@ -289,29 +290,5 @@ html.size-large .narrativeCode-component {
         .narrativeCode-strapline-header-inner {
             transition: transform 400ms ease-in-out;
         }
-    }
-}
-
-
-html.accessibility {
-
-    .narrativeCode-control-left:focus, .narrativeCode-control-left.focus {
-        left: extract(@focus-outline, 1);
-        .dir-rtl & {
-            left: inherit;
-            right: extract(@focus-outline, 1);
-        }
-    }
-
-    .narrativeCode-control-right:focus, .narrativeCode-control-right.focus {
-        right: extract(@focus-outline, 1);
-        .dir-rtl & {
-            right: inherit;
-            left: extract(@focus-outline, 1);
-        }
-    }
-
-    .narrativeCode-strapline-title:focus .focus-rect {
-        outline: @focus-outline;
     }
 }

@@ -53,6 +53,11 @@
 
         <div class="narrative-slide-container">
 
+            <div class="narrative-indicators">
+                {{#each _items}}
+                <div class="narrative-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
+                {{/each}}
+            </div>
             <button class="base narrative-controls narrative-control-left" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
                 <div class="icon icon-controls-left"></div>
             </button>
@@ -68,11 +73,6 @@
                         <div class="graphic-attribution">{{{_graphic.attribution}}}</div>
                     {{/if}}
                 </div>
-                {{/each}}
-            </div>
-            <div class="narrative-indicators">
-                {{#each _items}}
-                <div class="narrative-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
                 {{/each}}
             </div>
         </div>
