@@ -1,8 +1,9 @@
 define([
     'core/js/adapt',
     'core/js/views/componentView',
+    './modeEnum',
     'core/js/libraries/prism'
-], function(Adapt, ComponentView) {
+], function(Adapt, ComponentView, MODE) {
     'use strict';
 
     var NarrativeCodeView = ComponentView.extend({
@@ -17,11 +18,10 @@ define([
 
         preRender: function() {
             this.listenTo(Adapt, {
-                'device:changed': this.reRender,
-                'device:resize': this.resizeControl,
+                'device:changed device:resize': this.reRender,
                 'notify:closed': this.closeNotify
             });
-            this.setDeviceSize();
+            this.renderMode();
 
             this.listenTo(this.model.get('_children'), {
                 'change:_isActive': this.onItemsActiveChange,
@@ -43,14 +43,29 @@ define([
             this.$('[data-index="' + item.get('_index') + '"]').addClass('visited');
         },
 
-        setDeviceSize: function() {
-            this.model.set('_isDesktop', Adapt.device.screenSize === 'large');
+        calculateMode: function() {
+            var mode = Adapt.device.screenSize === 'large' ?
+                MODE.LARGE :
+                MODE.SMALL;
+            this.model.set('_mode', mode);
+        },
+
+        renderMode: function() {
+            this.calculateMode();
+            if (this.isLargeMode()) {
+                this.$el.addClass('mode-large').removeClass('mode-small');
+            } else {
+                this.$el.addClass('mode-small').removeClass('mode-large');
+            }
+        },
+
+        isLargeMode: function() {
+            return this.model.get('_mode') === MODE.LARGE;
         },
 
         postRender: function() {
-            this.renderState();
+            this.renderMode();
             this.$('.narrativeCode-slider').imageready(this.setReadyStatus.bind(this));
-            Prism.highlightAll();
             this.setupNarrativeCode();
 
             if (Adapt.config.get('_disableAnimation')) {
@@ -67,7 +82,7 @@ define([
         },
 
         setupNarrativeCode: function() {
-            this.setDeviceSize();
+            this.renderMode();
             var items = this.model.get('_children');
             if (!items || !items.length) return;
 
@@ -82,7 +97,7 @@ define([
 
             this.calculateWidths();
 
-            if (Adapt.device.screenSize !== 'large') {
+            if (!this.isLargeMode() && !this.model.get('_wasHotgraphic')) {
                 this.replaceInstructions();
             }
             this.setupEventListeners();
@@ -92,22 +107,26 @@ define([
         calculateWidths: function() {
             var itemCount = this.model.get('_children').length;
             this.model.set({
-                '_totalWidth': (100 * itemCount) + itemCount,
+                '_totalWidth': 100 * itemCount,
                 '_itemWidth': 100 / itemCount
             });
         },
 
         resizeControl: function() {
-            var wasDesktop = this.model.get('_isDesktop');
-            this.setDeviceSize();
-            if (wasDesktop != this.model.get('_isDesktop')) this.replaceInstructions();
+            var previousMode = this.model.get('_mode');
+            this.renderMode();
+            if (previousMode !== this.model.get('_mode')) this.replaceInstructions();
             this.evaluateNavigation();
             var activeItem = this.model.getActiveItem();
             if (activeItem) this.setStage(activeItem);
         },
 
         reRender: function() {
-            this.resizeControl();
+            if (this.model.get('_wasHotgraphic') && this.isLargeMode()) {
+                this.replaceWithHotgraphic();
+            } else {
+                this.resizeControl();
+            }
         },
 
         closeNotify: function() {
@@ -115,11 +134,40 @@ define([
         },
 
         replaceInstructions: function() {
-            if (Adapt.device.screenSize === 'large') {
-                this.$('.narrativeCode-instruction-inner').html(this.model.get('instruction')).a11y_text();
-            } else if (this.model.get('mobileInstruction')) {
-                this.$('.narrativeCode-instruction-inner').html(this.model.get('mobileInstruction')).a11y_text();
+            if (this.isLargeMode()) {
+                this.$('.narrativeCode-instruction-inner').html(this.model.get('instruction'));
+            } else if (this.model.get('mobileInstruction') && !this.model.get('_wasHotgraphic')) {
+                this.$('.narrativeCode-instruction-inner').html(this.model.get('mobileInstruction'));
             }
+        },
+
+        replaceWithHotgraphic: function() {
+            if (!Adapt.componentStore.hotgraphic) throw "Hotgraphic not included in build";
+            var HotgraphicView = Adapt.componentStore.hotgraphic.view;
+
+            var model = this.prepareHotgraphicModel();
+            var newHotgraphic = new HotgraphicView({ model: model });
+            var $container = $(".component-container", $("." + this.model.get("_parentId")));
+
+            $container.append(newHotgraphic.$el);
+            this.remove();
+            $.a11y_update();
+            _.defer(function() {
+                Adapt.trigger('device:resize');
+            });
+        },
+
+        prepareHotgraphicModel: function() {
+            var model = this.model;
+            model.resetActiveItems();
+            model.set({
+                '_isPopupOpen': false,
+                '_component': 'hotgraphic',
+                'body': model.get('originalBody'),
+                'instruction': model.get('originalInstruction')
+            });
+
+            return model;
         },
 
         moveSliderToIndex: function(itemIndex, shouldAnimate) {
@@ -134,7 +182,7 @@ define([
             $sliderElm.css('transform', cssValue);
             $straplineHeaderElm.css('transform', cssValue);
 
-            if (Adapt.config.get('_disableAnimation')) {
+            if (Adapt.config.get('_disableAnimation') || this._isInitial) {
                 this.onTransitionEnd();
             } else {
                 $sliderElm.one('transitionend', this.onTransitionEnd.bind(this));
@@ -145,7 +193,7 @@ define([
             if (this._isInitial) return;
 
             var index = this.model.getActiveItem().get('_index');
-            if (this.model.get('_isDesktop')) {
+            if (this.isLargeMode()) {
                 this.$('.narrativeCode-content-item[data-index="'+index+'"]').a11y_focus();
             } else {
                 this.$('.narrativeCode-strapline-title').a11y_focus();
@@ -154,7 +202,7 @@ define([
 
         setStage: function(item) {
             var index = item.get('_index');
-            if (this.model.get('_isDesktop')) {
+            if (this.isLargeMode()) {
                 // Set the visited attribute for large screen devices
                 item.toggleVisited(true);
             }
@@ -195,19 +243,19 @@ define([
             event && event.preventDefault();
 
             var currentItem = this.model.getActiveItem();
-
-            // Set the visited attribute for small and medium screen devices
-            currentItem.toggleVisited(true);
-
             Adapt.trigger('notify:popup', {
                 title: currentItem.get('title'),
                 body: currentItem.get('body')
+            });
+
+            Adapt.on('popup:opened', function() {
+                // Set the visited attribute for small and medium screen devices
+                currentItem.toggleVisited(true);
             });
         },
 
         onNavigationClicked: function(event) {
             var stage = this.model.getActiveItem().get('_index');
-            var numberOfItems = this.model.get('_children').length;
 
             if ($(event.currentTarget).hasClass('narrativeCode-control-right')) {
                 this.model.setActiveItem(++stage);
@@ -259,3 +307,4 @@ define([
     return NarrativeCodeView;
 
 });
+    

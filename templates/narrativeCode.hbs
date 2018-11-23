@@ -1,19 +1,19 @@
-<div class="narrativeCode-inner component-inner" role="region" aria-label="{{_globals._components._narrative.ariaRegion}}">
+<div class="narrativeCode-inner  component-inner">
     {{> component this}}
     <div class="narrativeCode-widget component-widget {{#if _hasNavigationInTextArea}}narrativeCode-text-controls{{/if}}">
 
         <div class="narrativeCode-content">
             <div class="narrativeCode-content-inner">
                 {{#each _items}}
-                <div class="narrativeCode-content-item" {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}">
+                <div class="narrativeCode-content-item {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}">
                     <div class="narrativeCode-content-title">
-                        <div class="narrativeCode-content-title-inner h5" role="heading" aria-level="5" tabindex="0">
+                        <div class="narrativeCode-content-title-inner" {{a11y_attrs_heading 'componentItem'}}>
                             {{{title}}}
                         </div>
                     </div>
                     <div class="narrativeCode-content-body">
                         <div class="narrativeCode-content-body-inner">
-                            {{{a11y_text body}}}
+                            {{{compile body}}}
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 <div class="narrativeCode-strapline-header-inner clearfix" style="width: {{_totalWidth}}%">
                     <div></div>
                     {{#each _items}}
-                    <button role="button" class="base narrativeCode-strapline-title {{#if _isVisited}}visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
+                    <button class="base narrativeCode-strapline-title {{#if _isVisited}}visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
                         <div class="narrativeCode-strapline-title-inner h5">
                             {{{strapline}}}
                         </div>
@@ -53,23 +53,23 @@
 
         <div class="narrativeCode-slide-container">
 
-            <button class="base narrativeCode-controls narrativeCode-control-left" role="button" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
+            <div class="narrativeCode-indicators">
+                {{#each _items}}
+                <div class="narrativeCode-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
+                {{/each}}
+            </div>
+            <button class="base narrativeCode-controls narrativeCode-control-left" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
                 <div class="icon icon-controls-left"></div>
             </button>
-            <button class="base narrativeCode-controls narrativeCode-control-right" role="button" aria-label="{{_globals._accessibility._ariaLabels.next}}">
+            <button class="base narrativeCode-controls narrativeCode-control-right" aria-label="{{_globals._accessibility._ariaLabels.next}}">
                 <div class="icon icon-controls-right"></div>
             </button>
 
             <div class="narrativeCode-slider clearfix" style="width: {{_totalWidth}}%">
                 {{#each _items}}
                 <div class="narrativeCode-slider-code {{#if _isVisited}}visited{{/if}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
-                    <pre><code class="language-{{code.lang}}">{{code.src}}</code></pre>
+                    <pre class="language-{{code.lang}}"><code class="language-{{code.lang}}">{{code.src}}</code></pre>
                 </div>
-                {{/each}}
-            </div>
-            <div class="narrativeCode-indicators">
-                {{#each _items}}
-                <div class="narrativeCode-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
                 {{/each}}
             </div>
         </div>
