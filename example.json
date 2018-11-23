@@ -1,45 +1,45 @@
 {
-  "_id": "c-35",
-  "_parentId": "b-15",
-  "_type": "component",
-	"_component": "narrativeCode",
-	"_classes": "",
-	"_layout": "full",
-	"_comment": "setCompletionOn = inview | allItems",
-	"_setCompletionOn": "allItems",
-	"_hasNavigationInTextArea": true,
-	"title": "Narrative Code",
-	"displayTitle": "Narrative Code",
-	"body": "The narrative component lets you scroll through a series of images each with some accompanying text.<br><br>This component is always spanned.",
-	"instruction": "Use the arrows to cycle through the code development.",
-	"mobileInstruction": "Use the arrows to cycle through the code development. Click the box above the code to see more.",
-	"_items": [
-		{
-			"title": "Narrative item 1",
-			"body": "Narratives are particularly good for showing dialogue between two or more characters, with each step of the conversation being accompanied by an image. This photo story approach can be used to provide context for the learning to follow, to illustrate real-world application of the learning or to show the impact on people when the learning hasn’t been applied correctly.",
-			"code": {
-				"src": "p { color: red }\nbody {color:blue}",
-				"lang": "css"
-			},
-			"strapline": "Narrative item 1"
-		},
-		{
-			"title": "Narrative item 2",
-			"body": "Narratives can also be used to present case studies, where the different displays are used to set the scene, show the key events and then the outcome.",
-			"code": {
-				"src": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>Narrative</title>\n</head>\n<body>\n<p>Hello world!</p>\n</body>\n</html>",
-				"lang": "html"
-			},
-			"strapline": "Narrative item 2"
-		},
-		{
-			"title": "Narrative item 3",
-			"body": "The narrative can also be used when you want to illustrate the constituent steps that make up a larger process.",
-			"code": {
-				"src": "p { color: red }",
-				"lang": "css"
-			},
-			"strapline": "Narrative item 3"
-		}
-	]
+    "_id": "c-35",
+    "_parentId": "b-15",
+    "_type": "component",
+    "_component": "narrativeCode",
+    "_classes": "",
+    "_layout": "full",
+    "_comment": "setCompletionOn = inview | allItems",
+    "_setCompletionOn": "allItems",
+    "_hasNavigationInTextArea": true,
+    "title": "Narrative Code",
+    "displayTitle": "Narrative Code",
+    "body": "The narrative component lets you scroll through a series of images each with some accompanying text.<br><br>This component is always spanned.",
+    "instruction": "Use the arrows to cycle through the code development.",
+    "mobileInstruction": "Use the arrows to cycle through the code development. Click the box above the code to see more.",
+    "_items": [
+        {
+            "title": "Narrative item 1",
+            "body": "Narratives are particularly good for showing dialogue between two or more characters, with each step of the conversation being accompanied by an image. This photo story approach can be used to provide context for the learning to follow, to illustrate real-world application of the learning or to show the impact on people when the learning hasn’t been applied correctly.",
+            "code": {
+                "src": "p { color: red }\nbody {color:blue}",
+                "lang": "css"
+            },
+            "strapline": "Narrative item 1"
+        },
+        {
+            "title": "Narrative item 2",
+            "body": "Narratives can also be used to present case studies, where the different displays are used to set the scene, show the key events and then the outcome.",
+            "code": {
+                "src": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>Narrative</title>\n</head>\n<body>\n<p>Hello world!</p>\n</body>\n</html>",
+                "lang": "html"
+            },
+            "strapline": "Narrative item 2"
+        },
+        {
+            "title": "Narrative item 3",
+            "body": "The narrative can also be used when you want to illustrate the constituent steps that make up a larger process.",
+            "code": {
+                "src": "p { color: red }",
+                "lang": "css"
+            },
+            "strapline": "Narrative item 3"
+        }
+    ]
 }
