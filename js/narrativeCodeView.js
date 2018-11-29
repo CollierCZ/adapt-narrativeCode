@@ -3,7 +3,7 @@ define([
     'core/js/views/componentView',
     './modeEnum',
     'core/js/libraries/prism'
-], function(Adapt, ComponentView, MODE) {
+], function(Adapt, ComponentView, MODE, Prism) {
     'use strict';
 
     var NarrativeCodeView = ComponentView.extend({
@@ -67,6 +67,7 @@ define([
             this.renderMode();
             this.$('.narrativeCode-slider').imageready(this.setReadyStatus.bind(this));
             this.setupNarrativeCode();
+            Prism.highlightAll();
 
             if (Adapt.config.get('_disableAnimation')) {
                 this.$el.addClass('disable-animation');
