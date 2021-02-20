@@ -1,311 +1,323 @@
 define([
-    'core/js/adapt',
-    'core/js/views/componentView',
-    './modeEnum',
-    'core/js/libraries/prism'
-], function(Adapt, ComponentView, MODE, Prism) {
-    'use strict';
+  'core/js/adapt',
+  'core/js/views/componentView',
+  './modeEnum',
+  'core/libraries/prism'
+], function(Adapt, ComponentView, MODE) {
 
-    var NarrativeCodeView = ComponentView.extend({
+  class NarrativeCodeView extends ComponentView {
 
-        _isInitial: true,
+    events() {
+      return {
+        'click .js-narrativeCode-strapline-open-popup': 'openPopup',
+        'click .js-narrativeCode-controls-click': 'onNavigationClicked',
+        'click .js-narrativeCode-progress-click': 'onProgressClicked'
+      };
+    }
 
-        events: {
-            'click .narrativeCode-strapline-title': 'openPopup',
-            'click .narrativeCode-controls': 'onNavigationClicked',
-            'click .narrativeCode-indicators .narrativeCode-progress': 'onProgressClicked'
-        },
+    initialize(...args) {
+      super.initialize(...args);
 
-        preRender: function() {
-            this.listenTo(Adapt, {
-                'device:changed device:resize': this.reRender,
-                'notify:closed': this.closeNotify
-            });
-            this.renderMode();
+      this._isInitial = true;
+    }
 
-            this.listenTo(this.model.get('_children'), {
-                'change:_isActive': this.onItemsActiveChange,
-                'change:_isVisited': this.onItemsVisitedChange
-            });
+    preRender() {
+      this.listenTo(Adapt, {
+        'device:changed device:resize': this.reRender,
+        'notify:closed': this.closeNotify
+      });
+      this.renderMode();
 
-            this.checkIfResetOnRevisit();
-            this.calculateWidths();
-        },
+      this.listenTo(this.model.getChildren(), {
+        'change:_isActive': this.onItemsActiveChange,
+        'change:_isVisited': this.onItemsVisitedChange
+      });
 
-        onItemsActiveChange: function(item, _isActive) {
-            if (_isActive === true) {
-                this.setStage(item);
-            }
-        },
+      this.checkIfResetOnRevisit();
+      this.calculateWidths();
+    }
 
-        onItemsVisitedChange: function(item, isVisited) {
-            if (!isVisited) return;
-            this.$('[data-index="' + item.get('_index') + '"]').addClass('visited');
-        },
+    onItemsActiveChange(item, _isActive) {
+      if (!_isActive) return;
+      this.setStage(item);
+    }
 
-        calculateMode: function() {
-            var mode = Adapt.device.screenSize === 'large' ?
-                MODE.LARGE :
-                MODE.SMALL;
-            this.model.set('_mode', mode);
-        },
+    onItemsVisitedChange(item, _isVisited) {
+      if (!_isVisited) return;
+      this.$(`[data-index="${item.get('_index')}"]`).addClass('is-visited');
+    }
 
-        renderMode: function() {
-            this.calculateMode();
-            if (this.isLargeMode()) {
-                this.$el.addClass('mode-large').removeClass('mode-small');
-            } else {
-                this.$el.addClass('mode-small').removeClass('mode-large');
-            }
-        },
+    calculateMode() {
+      const mode = Adapt.device.screenSize === 'large' ? MODE.LARGE : MODE.SMALL;
+      this.model.set('_mode', mode);
+    }
 
-        isLargeMode: function() {
-            return this.model.get('_mode') === MODE.LARGE;
-        },
+    renderMode() {
+      this.calculateMode();
 
-        postRender: function() {
-            this.renderMode();
-            this.$('.narrativeCode-slider').imageready(this.setReadyStatus.bind(this));
-            this.setupNarrativeCode();
-            Prism.highlightAll();
+      const isLargeMode = this.isLargeMode();
+      this.$el.toggleClass('mode-large', isLargeMode).toggleClass('mode-small', !isLargeMode);
+    }
 
-            if (Adapt.config.get('_disableAnimation')) {
-                this.$el.addClass('disable-animation');
-            }
-        },
+    isLargeMode() {
+      return this.model.get('_mode') === MODE.LARGE;
+    }
 
-        checkIfResetOnRevisit: function() {
-            var isResetOnRevisit = this.model.get('_isResetOnRevisit');
-            // If reset is enabled set defaults
-            if (isResetOnRevisit) {
-                this.model.reset(isResetOnRevisit);
-            }
-        },
+    postRender() {
+      this.renderMode();
+      this.setupNarrativeCode();
 
-        setupNarrativeCode: function() {
-            this.renderMode();
-            var items = this.model.get('_children');
-            if (!items || !items.length) return;
+      this.$('.narrativeCode__slider').imageready(this.setReadyStatus.bind(this));
 
-            var activeItem = this.model.getActiveItem();
-            if (!activeItem) {
-                activeItem = this.model.getItem(0);
-                activeItem.toggleActive(true);
-            } else {
-                // manually trigger change as it is not fired on reentry
-                items.trigger('change:_isActive', activeItem, true);
-            }
+      window.Prism.highlightAll()
 
-            this.calculateWidths();
+      if (Adapt.config.get('_disableAnimation')) {
+        this.$el.addClass('disable-animation');
+      }
+    }
 
-            if (!this.isLargeMode() && !this.model.get('_wasHotgraphic')) {
-                this.replaceInstructions();
-            }
-            this.setupEventListeners();
-            this._isInitial = false;
-        },
+    checkIfResetOnRevisit() {
+      const isResetOnRevisit = this.model.get('_isResetOnRevisit');
+      // If reset is enabled set defaults
+      if (isResetOnRevisit) {
+        this.model.reset(isResetOnRevisit);
+      }
+    }
 
-        calculateWidths: function() {
-            var itemCount = this.model.get('_children').length;
-            this.model.set({
-                '_totalWidth': 100 * itemCount,
-                '_itemWidth': 100 / itemCount
-            });
-        },
+    setupNarrativeCode() {
+      this.renderMode();
+      const items = this.model.getChildren();
+      if (!items || !items.length) return;
 
-        resizeControl: function() {
-            var previousMode = this.model.get('_mode');
-            this.renderMode();
-            if (previousMode !== this.model.get('_mode')) this.replaceInstructions();
-            this.evaluateNavigation();
-            var activeItem = this.model.getActiveItem();
-            if (activeItem) this.setStage(activeItem);
-        },
+      let activeItem = this.model.getActiveItem();
+      if (!activeItem) {
+        activeItem = this.model.getItem(0);
+        activeItem.toggleActive(true);
+      } else {
+        // manually trigger change as it is not fired on reentry
+        items.trigger('change:_isActive', activeItem, true);
+      }
 
-        reRender: function() {
-            if (this.model.get('_wasHotgraphic') && this.isLargeMode()) {
-                this.replaceWithHotgraphic();
-            } else {
-                this.resizeControl();
-            }
-        },
+      this.calculateWidths();
 
-        closeNotify: function() {
-            this.evaluateCompletion();
-        },
+      if (!this.isLargeMode() && !this.model.get('_wasHotgraphic')) {
+        this.replaceInstructions();
+      }
+      this.setupEventListeners();
+      this._isInitial = false;
+    }
 
-        replaceInstructions: function() {
-            if (this.isLargeMode()) {
-                this.$('.narrativeCode-instruction-inner').html(this.model.get('instruction'));
-            } else if (this.model.get('mobileInstruction') && !this.model.get('_wasHotgraphic')) {
-                this.$('.narrativeCode-instruction-inner').html(this.model.get('mobileInstruction'));
-            }
-        },
+    calculateWidths() {
+      const itemCount = this.model.getChildren().length;
+      this.model.set({
+        _totalWidth: 100 * itemCount,
+        _itemWidth: 100 / itemCount
+      });
+    }
 
-        replaceWithHotgraphic: function() {
-            if (!Adapt.componentStore.hotgraphic) throw "Hotgraphic not included in build";
-            var HotgraphicView = Adapt.componentStore.hotgraphic.view;
+    resizeControl() {
+      const previousMode = this.model.get('_mode');
+      this.renderMode();
+      if (previousMode !== this.model.get('_mode')) this.replaceInstructions();
+      this.evaluateNavigation();
+      const activeItem = this.model.getActiveItem();
+      if (activeItem) this.setStage(activeItem);
+    }
 
-            var model = this.prepareHotgraphicModel();
-            var newHotgraphic = new HotgraphicView({ model: model });
-            var $container = $(".component-container", $("." + this.model.get("_parentId")));
+    reRender() {
+      if (this.model.get('_wasHotgraphic') && this.isLargeMode()) {
+        this.replaceWithHotgraphic();
+        return;
+      }
+      this.resizeControl();
+    }
 
-            $container.append(newHotgraphic.$el);
-            this.remove();
-            $.a11y_update();
-            _.defer(function() {
-                Adapt.trigger('device:resize');
-            });
-        },
+    closeNotify() {
+      this.evaluateCompletion();
+    }
 
-        prepareHotgraphicModel: function() {
-            var model = this.model;
-            model.resetActiveItems();
-            model.set({
-                '_isPopupOpen': false,
-                '_component': 'hotgraphic',
-                'body': model.get('originalBody'),
-                'instruction': model.get('originalInstruction')
-            });
+    replaceInstructions() {
+      if (this.isLargeMode()) {
+        this.$('.narrativeCode__instruction-inner').html(this.model.get('instruction'));
+        return;
+      }
 
-            return model;
-        },
+      if (this.model.get('mobileInstruction') && !this.model.get('_wasHotgraphic')) {
+        this.$('.narrativeCode__instruction-inner').html(this.model.get('mobileInstruction'));
+      }
+    }
 
-        moveSliderToIndex: function(itemIndex, shouldAnimate) {
-            var offset = this.model.get('_itemWidth') * itemIndex;
-            if (Adapt.config.get('_defaultDirection') === 'ltr') {
-                offset *= -1;
-            }
-            var cssValue = 'translateX('+offset+'%)';
-            var $sliderElm = this.$('.narrativeCode-slider');
-            var $straplineHeaderElm = this.$('.narrativeCode-strapline-header-inner');
+    replaceWithHotgraphic() {
+      const HotgraphicView = Adapt.getViewClass('hotgraphic');
+      if (!HotgraphicView) return;
 
-            $sliderElm.css('transform', cssValue);
-            $straplineHeaderElm.css('transform', cssValue);
+      const model = this.prepareHotgraphicModel();
+      const newHotgraphic = new HotgraphicView({ model });
 
-            if (Adapt.config.get('_disableAnimation') || this._isInitial) {
-                this.onTransitionEnd();
-            } else {
-                $sliderElm.one('transitionend', this.onTransitionEnd.bind(this));
-            }
-        },
+      this.$el.parents('.component__container').append(newHotgraphic.$el);
+      this.remove();
+      _.defer(() => {
+        Adapt.trigger('device:resize');
+      });
+    }
 
-        onTransitionEnd: function() {
-            if (this._isInitial) return;
+    prepareHotgraphicModel() {
+      const model = this.model;
+      model.resetActiveItems();
+      model.set({
+        _isPopupOpen: false,
+        _component: 'hotgraphic',
+        body: model.get('originalBody'),
+        instruction: model.get('originalInstruction')
+      });
 
-            var index = this.model.getActiveItem().get('_index');
-            if (this.isLargeMode()) {
-                this.$('.narrativeCode-content-item[data-index="'+index+'"]').a11y_focus();
-            } else {
-                this.$('.narrativeCode-strapline-title').a11y_focus();
-            }
-        },
+      return model;
+    }
 
-        setStage: function(item) {
-            var index = item.get('_index');
-            if (this.isLargeMode()) {
-                // Set the visited attribute for large screen devices
-                item.toggleVisited(true);
-            }
+    moveSliderToIndex(itemIndex) {
+      let offset = this.model.get('_itemWidth') * itemIndex;
+      if (Adapt.config.get('_defaultDirection') === 'ltr') {
+        offset *= -1;
+      }
+      const cssValue = `translateX(${offset}%)`;
+      const $sliderElm = this.$('.narrativeCode__slider');
+      const $straplineHeaderElm = this.$('.narrativeCode__strapline-header-inner');
 
-            var $slideGraphics = this.$('.narrativeCode-slider-graphic');
-            this.$('.narrativeCode-progress:visible').removeClass('selected').filter('[data-index="'+index+'"]').addClass('selected');
-            $slideGraphics.children('.controls').a11y_cntrl_enabled(false);
-            $slideGraphics.filter('[data-index="'+index+'"]').children('.controls').a11y_cntrl_enabled(true);
-            this.$('.narrativeCode-content-item').addClass('narrativeCode-hidden').a11y_on(false).filter('[data-index="'+index+'"]').removeClass('narrativeCode-hidden').a11y_on(true);
-            this.$('.narrativeCode-strapline-title').a11y_cntrl_enabled(false).filter('[data-index="'+index+'"]').a11y_cntrl_enabled(true);
+      $sliderElm.css('transform', cssValue);
+      $straplineHeaderElm.css('transform', cssValue);
 
-            this.evaluateNavigation();
-            this.evaluateCompletion();
-            this.moveSliderToIndex(index, !this._isInitial);
-        },
+      if (this._isInitial) return;
 
-        evaluateNavigation: function() {
-            var active = this.model.getActiveItem();
-            if (!active) return;
+      const hasStraplineTransition = !this.isLargeMode() && ($straplineHeaderElm.css('transitionDuration') !== '0s');
+      if (hasStraplineTransition) {
+        $straplineHeaderElm.one('transitionend', () => {
+          this.focusOnNarrativeCodeElement(itemIndex);
+        });
+        return;
+      }
 
-            var currentStage = active.get('_index');
-            var itemCount = this.model.get('_children').length;
+      this.focusOnNarrativeCodeElement(itemIndex);
+    }
 
-            var isAtStart = currentStage === 0;
-            var isAtEnd = currentStage === itemCount - 1;
+    focusOnNarrativeCodeElement(itemIndex) {
+      const dataIndexAttr = `[data-index='${itemIndex}']`;
+      const $elementToFocus = this.isLargeMode() ?
+        this.$(`.narrativeCode__content-item${dataIndexAttr}`) :
+        this.$(`.narrativeCode__strapline-btn${dataIndexAttr}`);
+      Adapt.a11y.focusFirst($elementToFocus);
+    }
 
-            this.$('.narrativeCode-control-left').toggleClass('narrativeCode-hidden', isAtStart);
-            this.$('.narrativeCode-control-right').toggleClass('narrativeCode-hidden', isAtEnd);
-        },
+    setStage(item) {
+      const index = item.get('_index');
+      const indexSelector = `[data-index="${index}"]`;
 
-        evaluateCompletion: function() {
-            if (this.model.areAllItemsCompleted()) {
-                this.trigger('allItems');
-            }
-        },
+      if (this.isLargeMode()) {
+        // Set the visited attribute for large screen devices
+        item.toggleVisited(true);
+      }
 
-        openPopup: function(event) {
-            event && event.preventDefault();
+      this.$('.narrativeCode__progress').removeClass('is-selected').filter(indexSelector).addClass('is-selected');
 
-            var currentItem = this.model.getActiveItem();
-            Adapt.trigger('notify:popup', {
-                title: currentItem.get('title'),
-                body: currentItem.get('body')
-            });
+      const $slideGraphics = this.$('.narrativeCode__slider-image-container');
+      Adapt.a11y.toggleAccessibleEnabled($slideGraphics.children('.controls'), false);
+      Adapt.a11y.toggleAccessibleEnabled($slideGraphics.filter(indexSelector).children('.controls'), true);
 
-            Adapt.on('popup:opened', function() {
-                // Set the visited attribute for small and medium screen devices
-                currentItem.toggleVisited(true);
-            });
-        },
+      const $narrativeCodeItems = this.$('.narrativeCode__content-item');
+      $narrativeCodeItems.addClass('u-visibility-hidden u-display-none');
+      Adapt.a11y.toggleAccessible($narrativeCodeItems, false);
+      Adapt.a11y.toggleAccessible($narrativeCodeItems.filter(indexSelector).removeClass('u-visibility-hidden u-display-none'), true);
 
-        onNavigationClicked: function(event) {
-            var stage = this.model.getActiveItem().get('_index');
+      const $narrativeCodeStraplineButtons = this.$('.narrativeCode__strapline-btn');
+      Adapt.a11y.toggleAccessibleEnabled($narrativeCodeStraplineButtons, false);
+      Adapt.a11y.toggleAccessibleEnabled($narrativeCodeStraplineButtons.filter(indexSelector), true);
 
-            if ($(event.currentTarget).hasClass('narrativeCode-control-right')) {
-                this.model.setActiveItem(++stage);
-            } else if ($(event.currentTarget).hasClass('narrativeCode-control-left')) {
-                this.model.setActiveItem(--stage);
-            }
-        },
+      this.evaluateNavigation();
+      this.evaluateCompletion();
+      this.moveSliderToIndex(index);
+    }
 
-        onProgressClicked: function(event) {
-            event && event.preventDefault();
-            var clickedIndex = $(event.target).data('index');
-            this.model.setActiveItem(clickedIndex);
-        },
+    evaluateNavigation() {
+      const active = this.model.getActiveItem();
+      if (!active) return;
 
-        inview: function(event, visible, visiblePartX, visiblePartY) {
-            if (!visible) return;
+      const index = active.get('_index');
+      const itemCount = this.model.getChildren().length;
 
-            if (visiblePartY === 'top') {
-                this._isVisibleTop = true;
-            } else if (visiblePartY === 'bottom') {
-                this._isVisibleBottom = true;
-            } else {
-                this._isVisibleTop = true;
-                this._isVisibleBottom = true;
-            }
+      const isAtStart = index === 0;
+      const isAtEnd = index === itemCount - 1;
 
-            var wasAllInview = (this._isVisibleTop && this._isVisibleBottom);
-            if (!wasAllInview) return;
+      const $left = this.$('.narrativeCode__controls-left');
+      const $right = this.$('.narrativeCode__controls-right');
 
-            this.$('.component-inner').off('inview');
-            this.setCompletionStatus();
-        },
+      const globals = Adapt.course.get('_globals');
 
-        setupEventListeners: function() {
-            if (this.model.get('_setCompletionOn') === 'inview') {
-                this.$('.component-widget').on('inview', this.inview.bind(this));
-            }
-        },
+      const ariaLabelsGlobals = globals._accessibility._ariaLabels;
+      const narrativeCodeGlobals = globals._components._narrativeCode;
 
-        remove: function() {
-            if (this.model.get('_setCompletionOn') === 'inview') {
-                this.$('.component-widget').off('inview');
-            }
-            ComponentView.prototype.remove.apply(this, arguments);
-        }
+      const ariaLabelPrevious = narrativeCodeGlobals.previous || ariaLabelsGlobals.previous;
+      const ariaLabelNext = narrativeCodeGlobals.next || ariaLabelsGlobals.next;
 
-    });
+      const prevTitle = isAtStart ? '' : this.model.getItem(index - 1).get('title');
+      const nextTitle = isAtEnd ? '' : this.model.getItem(index + 1).get('title');
 
-    return NarrativeCodeView;
+      $left.toggleClass('u-visibility-hidden', isAtStart);
+      $right.toggleClass('u-visibility-hidden', isAtEnd);
+
+      $left.attr('aria-label', Handlebars.compile(ariaLabelPrevious)({
+        title: prevTitle,
+        _globals: globals,
+        itemNumber: isAtStart ? null : index,
+        totalItems: itemCount
+      }));
+      $right.attr('aria-label', Handlebars.compile(ariaLabelNext)({
+        title: nextTitle,
+        _globals: globals,
+        itemNumber: isAtEnd ? null : index + 2,
+        totalItems: itemCount
+      }));
+    }
+
+    evaluateCompletion() {
+      if (this.model.areAllItemsCompleted()) {
+        this.trigger('allItems');
+      }
+    }
+
+    openPopup() {
+      const currentItem = this.model.getActiveItem();
+      Adapt.notify.popup({
+        title: currentItem.get('title'),
+        body: currentItem.get('body')
+      });
+
+      Adapt.on('popup:opened', function() {
+        // Set the visited attribute for small and medium screen devices
+        currentItem.toggleVisited(true);
+      });
+    }
+
+    onNavigationClicked(event) {
+      const $btn = $(event.currentTarget);
+      let index = this.model.getActiveItem().get('_index');
+      $btn.data('direction') === 'right' ? index++ : index--;
+      this.model.setActiveItem(index);
+    }
+
+    onProgressClicked(event) {
+      const index = $(event.target).data('index');
+      this.model.setActiveItem(index);
+    }
+
+    setupEventListeners() {
+      if (this.model.get('_setCompletionOn') === 'inview') {
+        this.setupInviewCompletion('.component__widget');
+      }
+    }
+
+  }
+
+  NarrativeCodeView.template = 'narrativeCode';
+
+  return NarrativeCodeView;
 
 });
-    

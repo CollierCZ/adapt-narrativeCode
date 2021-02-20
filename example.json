@@ -41,5 +41,8 @@
             },
             "strapline": "Narrative item 3"
         }
-    ]
+    ],
+    "_pageLevelProgress": {
+        "_isEnabled": true
+    }
 }

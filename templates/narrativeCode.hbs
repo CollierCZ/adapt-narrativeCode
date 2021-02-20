@@ -1,80 +1,110 @@
-<div class="narrativeCode-inner  component-inner">
-    {{> component this}}
-    <div class="narrativeCode-widget component-widget {{#if _hasNavigationInTextArea}}narrativeCode-text-controls{{/if}}">
+<div class="component__inner narrativeCode__inner">
 
-        <div class="narrativeCode-content">
-            <div class="narrativeCode-content-inner">
+    {{> component this}}
+
+    <div class="narrativeCode__widget component__widget{{#if _hasNavigationInTextArea}} narrativeCode__text-controls{{/if}}">
+
+        <div class="narrativeCode__content">
+            <div class="narrativeCode__content-inner">
                 {{#each _items}}
-                <div class="narrativeCode-content-item {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}">
-                    <div class="narrativeCode-content-title">
-                        <div class="narrativeCode-content-title-inner" {{a11y_attrs_heading 'componentItem'}}>
+                <div class="narrativeCode__content-item{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}">
+                    
+                    {{#if title}}
+                    <div class="narrativeCode__content-title">
+                        <div class="narrativeCode__content-title-inner" {{a11y_attrs_heading 'componentItem'}}>
                             {{{title}}}
                         </div>
                     </div>
-                    <div class="narrativeCode-content-body">
-                        <div class="narrativeCode-content-body-inner">
+                     {{/if}}
+
+                     {{#if body}}
+                    <div class="narrativeCode__content-body">
+                        <div class="narrativeCode__content-body-inner">
                             {{{compile body}}}
                         </div>
                     </div>
+                    {{/if}}
+
                 </div>
                 {{/each}}
-                <div class="narrativeCode-controls-container clearfix">
-                    <div class="narrativeCode-indicators">
+
+                <div class="narrativeCode__controls-container u-clearfix">
+
+                    
+                    <button data-direction="left" class="btn-icon narrativeCode__controls narrativeCode_controls-left js-narrativeCode-controls-click" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
+                        <div class="icon"></div>
+                    </button>
+
+                    <div class="narrativeCode__indicators">
                         {{#each _items}}
-                        <div class="narrativeCode-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
+                        <div class="narrativeCode__progress component-item-color js-narrativeCode-progress-click{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}"></div>
                         {{/each}}
                     </div>
-                    <button class="base narrativeCode-controls narrativeCode-control-left" role="button" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
-                        <div class="icon icon-controls-left"></div>
-                    </button>
-                    <button class="base narrativeCode-controls narrativeCode-control-right" role="button" aria-label="{{_globals._accessibility._ariaLabels.next}}">
-                        <div class="icon icon-controls-right"></div>
+
+                    <button data-direction="right" class="btn-icon narrativeCode__controls narrativeCode__controls-right js-narrativeCode-controls-click" aria-label="{{_globals._accessibility._ariaLabels.next}}">
+                        <div class="icon"></div>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="narrativeCode-strapline">
-            <div class="narrativeCode-strapline-header">
-                <div class="narrativeCode-strapline-header-inner clearfix" style="width: {{_totalWidth}}%">
-                    <div></div>
+        <div class="narrativeCode__strapline">
+
+
+            <div class="narrativeCode__controls-container u-clearfix">
+
+                <button data-direction="left" class="btn-icon narrativeCode__controls narrativeCode__controls-left js-narrativeCode-controls-click" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
+                    <div class="icon"></div>
+                </button>
+
+                <button data-direction="right" class="btn-icon narrativeCode__controls narrativeCode__controls-right js-narrativeCode-controls-click" aria-label="{{_globals._accessibility._ariaLabels.next}}">
+                    <div class="icon"></div>
+                </button>
+
+            </div>
+            
+            <div class="narrativeCode__strapline-header">
+                <div class="narrativeCode__strapline-header-inner u-clearfix" style="width: {{_totalWidth}}%">
+
                     {{#each _items}}
-                    <button class="base narrativeCode-strapline-title {{#if _isVisited}}visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
-                        <div class="narrativeCode-strapline-title-inner h5">
-                            {{{strapline}}}
+                    <button class="narrativeCode__strapline-btn js-narrativeCode-strapline-open-popup{{#if _isVisited}} is-visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
+
+                        <div class="narrativeCode__strapline-title">
+                            <div class="narrativeCode__strapline-title-inner">
+                                {{{strapline}}}
+                            </div>
                         </div>
-                        <div class="icon icon-plus"></div>
+
+                        <div class="btn-icon narrativeCode__strapline-icon">
+                            <div class="icon"></div>
+                        </div>
+
                         <div class="focus-rect"></div>
+
                     </button>
                     {{/each}}
                 </div>
             </div>
         </div>
 
-        <div class="narrativeCode-slide-container">
+        <div class="narrativeCode__slide-container">
 
-            <div class="narrativeCode-indicators">
+            <div class="narrativeCode__slider u-clearfix" style="width: {{_totalWidth}}%">
                 {{#each _items}}
-                <div class="narrativeCode-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
-                {{/each}}
-            </div>
-            <button class="base narrativeCode-controls narrativeCode-control-left" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
-                <div class="icon icon-controls-left"></div>
-            </button>
-            <button class="base narrativeCode-controls narrativeCode-control-right" aria-label="{{_globals._accessibility._ariaLabels.next}}">
-                <div class="icon icon-controls-right"></div>
-            </button>
-
-            <div class="narrativeCode-slider clearfix" style="width: {{_totalWidth}}%">
-                {{#each _items}}
-                <div class="narrativeCode-slider-code {{#if _isVisited}}visited{{/if}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
+                <div class="narrativeCode__slider-code-container{{#if _isVisited}} is-visited{{/if}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
                     <pre class="language-{{code.lang}}"><code class="language-{{code.lang}}">{{code.src}}</code></pre>
                 </div>
                 {{/each}}
             </div>
         </div>
 
-        <div class="clearfix"></div>
+        <div class="narrativeCode__indicators narrativeCode__slide-indicators">
+
+            {{#each _items}}
+            <div class="narrativeCode__progress js-narrativeCode-progress-click{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}"></div>
+            {{/each}}
+
+        </div>
 
     </div>
 </div>
