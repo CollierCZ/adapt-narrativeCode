@@ -92,7 +92,7 @@
             <div class="narrativeCode__slider u-clearfix" style="width: {{_totalWidth}}%">
                 {{#each _items}}
                 <div class="narrativeCode__slider-code-container{{#if _isVisited}} is-visited{{/if}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
-                    <pre class="language-{{code.lang}}"><code class="language-{{code.lang}}">{{code.src}}</code></pre>
+                    <pre class="line-numbers language-{{code.lang}}"><code class="language-{{code.lang}}">{{code.src}}</code></pre>
                 </div>
                 {{/each}}
             </div>

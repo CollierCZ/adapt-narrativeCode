@@ -73,6 +73,6 @@ On mobile devices, the narrative text is collapsed above the code. It is accesse
 
 ---
 
-**Version number:** 2.0.0
+**Version number:** 2.1.0
 **Framework versions:** 5.5+  
 **Author / maintainer:** [Aaron Collier](https://github.com/CollierCZ). Forked in June 2018 from the [Narrative component](https://github.com/adaptlearning/adapt-contrib-narrative) written by the Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-narrative/graphs/contributors)
